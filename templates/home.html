@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title text-gradient">Understand Your Loan Risk <br>Before You Borrow.</h1>
+        <p class="hero-subtitle">
+            AI-powered financial risk analysis that evaluates borrower profiles and predicts loan default probability.
+        </p>
+        <div class="hero-buttons">
+            <a href="/assessment" class="btn btn-primary">Start Risk Assessment</a>
+            <a href="/about" class="btn btn-secondary">Learn More</a>
+        </div>
+    </div>
+</div>
+
+<div class="stats-section mt-2">
+    <div class="stat-card card">
+        <h3 class="stat-number text-gradient">82%</h3>
+        <p class="stat-label">Model Accuracy</p>
+    </div>
+    <div class="stat-card card">
+        <h3 class="stat-number text-gradient">120K+</h3>
+        <p class="stat-label">Training Records</p>
+    </div>
+    <div class="stat-card card">
+        <h3 class="stat-number text-gradient">3</h3>
+        <p class="stat-label">Machine Learning Models</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-container">
+    <div class="card">
+        <h1 class="text-gradient mb-2">About the Project</h1>
+        
+        <div class="about-section">
+            <h3>Project Overview</h3>
+            <p class="text-secondary">
+                "Credit Risk Insight" is an academic demonstration predicting loan default probability using modern Machine Learning techniques. 
+                By analyzing borrower profiles—including income, loan size, credit score, and employment background—the system outputs a data-driven risk score.
+            </p>
+        </div>
+
+        <div class="about-section mt-2">
+            <h3>Technology Stack</h3>
+            <ul class="tech-list text-secondary">
+                <li><strong>Backend:</strong> Python, Flask</li>
+                <li><strong>Machine Learning:</strong> Scikit-Learn (Logistic Regression, Standardization)</li>
+                <li><strong>Frontend:</strong> HTML, CSS, Vanilla JS</li>
+                <li><strong>Deployment:</strong> Render (via Gunicorn)</li>
+            </ul>
+        </div>
+
+        <div class="about-section mt-2">
+            <h3>Machine Learning Model</h3>
+            <p class="text-secondary">
+                The core engine utilizes a <strong>Logistic Regression</strong> classifier for binomial classification (Default vs. Paid). 
+                Input features are systematically normalized using <code>StandardScaler</code> to ensure balanced weighted importance. 
+                The model uses <code>predict_proba()</code> to return a continuous risk percentage rather than a hard binary classification, allowing for tiered risk profiling.
+            </p>
+        </div>
+
+        <div class="about-section mt-2">
+            <h3>System Architecture</h3>
+            <div class="arch-flow">
+                <div class="arch-node">User Input</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node">Flask Backend</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node">ML Model (`model.pkl`)</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node">Risk Prediction</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node">UI Visualization</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

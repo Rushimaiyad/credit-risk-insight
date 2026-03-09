@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="insights-container">
+    <div class="text-center mb-2">
+        <h1 class="hero-title text-gradient">Model Insights</h1>
+        <p class="text-secondary">Understand the variables driving our AI's risk predictions.</p>
+    </div>
+
+    <div class="card mb-2">
+        <h2 class="mb-2">How It Works</h2>
+        <p class="text-secondary">
+            Credit Risk Insight uses a Logistic Regression machine learning model trained on historical lending data. 
+            The system evaluates several financial and demographic factors to estimate the statistical probability of a borrower missing consecutive payments (defaulting).
+        </p>
+    </div>
+
+    <div class="features-grid">
+        <div class="card focus-card">
+            <h3>Credit Score Influence</h3>
+            <p class="text-secondary mt-2">
+                A higher credit score represents a proven history of managing debt, heavily decreasing the mathematical probability of default.
+            </p>
+            <div class="importance-bar mt-2">
+                <div class="bar-fill" style="width: 85%; background: var(--primary-color);"></div>
+            </div>
+            <p class="bar-label text-secondary">High Impact</p>
+        </div>
+
+        <div class="card focus-card">
+            <h3>Income-to-Loan Ratio</h3>
+            <p class="text-secondary mt-2">
+                The relationship between Annual Income and Loan Amount directly determines the borrower's capacity to repay.
+            </p>
+            <div class="importance-bar mt-2">
+                <div class="bar-fill" style="width: 75%; background: var(--primary-color);"></div>
+            </div>
+            <p class="bar-label text-secondary">Significant Impact</p>
+        </div>
+        
+        <div class="card focus-card">
+            <h3>Employment Type & Tenure</h3>
+            <p class="text-secondary mt-2">
+                Salaried workers with a longer employment history typically exhibit lower variance in income, reducing risk.
+            </p>
+            <div class="importance-bar mt-2">
+                <div class="bar-fill" style="width: 50%; background: var(--primary-color);"></div>
+            </div>
+            <p class="bar-label text-secondary">Moderate Impact</p>
+        </div>
+
+        <div class="card focus-card">
+            <h3>Existing Credit Lines</h3>
+            <p class="text-secondary mt-2">
+                A high number of existing credit lines increases overall debt burden, leading to an increased probability of default.
+            </p>
+            <div class="importance-bar mt-2">
+                <div class="bar-fill" style="width: 60%; background: var(--primary-color);"></div>
+            </div>
+            <p class="bar-label text-secondary">Moderate Impact</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

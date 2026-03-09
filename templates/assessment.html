@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="assessment-container">
+    <div class="card form-card">
+        <h2 class="form-title text-gradient">Financial Default Risk Assessment</h2>
+        <p class="form-subtitle">Enter borrower details below to evaluate the probability of loan default.</p>
+        
+<form id="assessmentForm" class="assessment-form mt-2" action="/predict" method="POST">
+            <div class="form-grid">
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">💰</span>
+                        <input type="number" id="annual_income" name="annual_income" placeholder="e.g. 65000" required>
+                        <label for="annual_income">Annual Income ($)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">💳</span>
+                        <input type="number" id="loan_amount" name="loan_amount" placeholder="e.g. 15000" required>
+                        <label for="loan_amount">Loan Amount ($)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">⭐</span>
+                        <input type="number" id="credit_score" name="credit_score" placeholder="e.g. 680" required>
+                        <label for="credit_score">Credit Score</label>
+                    </div>
+                </div>
+                
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">💼</span>
+                        <select id="employment_type" name="employment_type" required>
+                            <option value="Salaried">Salaried</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Freelancer">Freelancer</option>
+                        </select>
+                        <label for="employment_type">Employment Type</label>
+                    </div>
+                </div>
+                
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">📅</span>
+                        <input type="number" id="years_employment" name="years_employment" placeholder="e.g. 5" step="0.1" required>
+                        <label for="years_employment">Years of Employment</label>
+                    </div>
+                </div>
+                
+                <div class="form-group floating">
+                    <div class="input-wrapper">
+                        <span class="input-icon">📊</span>
+                        <input type="number" id="existing_credit_lines" name="existing_credit_lines" placeholder="e.g. 3" required>
+                        <label for="existing_credit_lines">Number of Existing Credit Lines</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions mt-2">
+                <button type="submit" class="btn btn-gradient submit-btn">Analyze Risk</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Section (Hidden initially) -->
+    <div id="resultCard" class="card result-card hidden mt-2">
+        <h3 class="result-title text-center">Prediction Result</h3>
+        
+        <div class="risk-level-container text-center mt-2">
+            <div id="riskLevelBadge" class="risk-badge">Computing...</div>
+        </div>
+
+        <div class="probability-container mt-2">
+            <div class="prob-header">
+                <span>Default Probability</span>
+                <span id="probPercentage">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="riskProgressBar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+        
+        <div class="chart-placeholder mt-2">
+            <p class="text-secondary text-center">Model Decision Confidence: High</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('assessmentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.textContent = 'Analyzing...';
+        submitBtn.disabled = true;
+
+        const formData = {
+            annual_income: document.getElementById('annual_income').value,
+            loan_amount: document.getElementById('loan_amount').value,
+            credit_score: document.getElementById('credit_score').value,
+            employment_type: document.getElementById('employment_type').value,
+            years_employment: document.getElementById('years_employment').value,
+            existing_credit_lines: document.getElementById('existing_credit_lines').value,
+        };
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                displayResult(result);
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while predicting risk.');
+        } finally {
+            submitBtn.textContent = 'Analyze Risk';
+            submitBtn.disabled = false;
+        }
+    });
+
+    function displayResult(result) {
+        const resultCard = document.getElementById('resultCard');
+        const badge = document.getElementById('riskLevelBadge');
+        const probText = document.getElementById('probPercentage');
+        const probBar = document.getElementById('riskProgressBar');
+
+        resultCard.classList.remove('hidden');
+
+        // Reset classes
+        badge.className = 'risk-badge';
+        probBar.className = 'progress-bar-fill';
+
+        // Set values
+        probText.textContent = `${result.probability}%`;
+        
+        // Trigger reflow for animation
+        void probBar.offsetWidth; 
+        probBar.style.width = `${result.probability}%`;
+
+        badge.textContent = result.risk_level;
+
+        // Apply color classes
+        if (result.risk_level === 'Low Risk') {
+            badge.classList.add('badge-low');
+            probBar.classList.add('bg-low');
+        } else if (result.risk_level === 'Moderate Risk') {
+            badge.classList.add('badge-moderate');
+            probBar.classList.add('bg-moderate');
+        } else {
+            badge.classList.add('badge-high');
+            probBar.classList.add('bg-high');
+        }
+        
+        // Scroll to results
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+</script>
+{% endblock %}
